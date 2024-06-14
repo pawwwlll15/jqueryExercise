@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="movieRating">
+        <input type="text" id="movieTitle" placeholder="movie title" min="2">
+        <input type="number" id="rating" placeholder="rating" min="0" max="10">
+        <button type="submit" id="submit">Submit</button>
+    </form>
+    <form id="organize">
+        <button type="submit" id="alphabetical">Organize Alphabetically</button>
+        <button type="button" id="orgRating">Organize by Rating</button>
+    </form>
+    <div>
+        <ol id="movieList">
+
+        </ol>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script>
+
+        /* jQuery Js goes right into the html file! */
+        $(document).ready(function(){
+            $('#movieRating').on('submit',function(e){
+                e.preventDefault();
+                const movieTitle = $('#movieTitle').val();
+                const rating = $('#rating').val();
+                if(movieTitle.length < 2){
+                    alert("MOVIE TITLE MUST BE ATLEAST 2 LETTERS");
+                    return
+                }
+                const rmBtn = $('<button id="delete">').text('delete');
+                rmBtn.on('click',function(){
+                    this.parentElement.remove();
+                })
+                const movieRate = $('<li>').text(`${movieTitle}: Rating: ${rating} `);
+                movieRate.append(rmBtn);
+                $('#movieList').append(movieRate);
+                /* need to empty out input values using jQuery .val */
+                $('#movieTitle').val("");
+                $('#rating').val("");
+            });
+
+            $("#alphabetical").on('click',function(e){
+
+                /* not working!!! need help */
+                e.preventDefault();
+                const movies = $('#movieList');
+                const movieArr = Array.from(movies.children);
+                const organizedList = movieArr.sort(function(stringA,stringB){
+                     /* .localCompare is a built in method that compares 2 strings */
+                   const organized = stringA.textContent.localeCompare(stringB.textContent);
+                   return organized;
+                });
+                movies.empty();
+                organizedList.forEach(movie =>{
+                    movies.push(movie);
+                })
+                
+                
+            });
+        });
+
+
+    </script>
+</body>
+</html>
