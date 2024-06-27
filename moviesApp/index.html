@@ -34,6 +34,10 @@
                     alert("MOVIE TITLE MUST BE ATLEAST 2 LETTERS");
                     return
                 }
+                if(rating === ''){
+                    alert('please rate movie before submitting!');
+                    return
+                }
                 const rmBtn = $('<button id="delete">').text('delete');
                 rmBtn.on('click',function(){
                     this.parentElement.remove();
@@ -49,23 +53,32 @@
             $("#alphabetical").on('click',function(e){
 
                 /* not working!!! need help */
+                /* 1. create an array from li's textContent. */
                 e.preventDefault();
-                const movies = $('#movieList');
-                const movieArr = Array.from(movies.children);
-                const organizedList = movieArr.sort(function(stringA,stringB){
-                     /* .localCompare is a built in method that compares 2 strings */
-                   const organized = stringA.textContent.localeCompare(stringB.textContent);
-                   return organized;
-                });
-                movies.empty();
-                organizedList.forEach(movie =>{
-                    movies.push(movie);
-                })
+                const movies = document.getElementById('movieList').getElementsByTagName('li');
+                let movieArr = [];
+                for(let movie of movies){
+                    movieArr.push(movie.innerText);
+                }
+                $('#movieList').empty();
+                /* sort only works on arrays */
+                const sortedMovies = movieArr.sort();
+                for(let movie of sortedMovies){
+                    const rmBtn = $('<button id="delete">').text('delete');
+                    rmBtn.on('click',function(){
+                        this.parentElement.remove();
+                    })
+                    const movieRate = $('<li>').text(`${movie}`);
+                    movieRate.append(rmBtn);
+                    $('#movieList').append(movieRate);
+                }
+
                 
+                console.log(movieArr.sort());
                 
             });
         });
-
+        /* create an id for each element added to the li in order to extract them individually */
 
     </script>
 </body>
